@@ -1,0 +1,29 @@
+﻿@model OnlineKurs.Shared.Models.Courses
+
+<h2>Create a New Course</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<form asp-action="CreateCourse" method="post" class="mt-4">
+    <div class="mb-3">
+        <label for="Title" class="form-label">Course Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" value="@Model?.Title" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <textarea class="form-control" id="Description" name="Description" rows="4" required>@Model?.Description</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Course</button>
+    <a href="/Teacher/Home" class="btn btn-secondary">Cancel</a>
+</form>
+

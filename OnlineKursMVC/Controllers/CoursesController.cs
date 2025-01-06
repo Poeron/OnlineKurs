@@ -36,6 +36,13 @@ namespace OnlineKursMVC.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var jwtToken = HttpContext.Session.GetString("jwtToken");
+            if (string.IsNullOrEmpty(jwtToken))
+            {
+                ViewBag.IsEnrolled = false;
+                ViewBag.UserReview = null;
+                ViewBag.AllReviews = null;
+                return View(await _courseService.GetCourseByIdAsync(id));
+            }
             var userId = int.Parse(_jwtService.GetUserIdFromToken(jwtToken));
 
             var course = await _courseService.GetCourseByIdAsync(id);
@@ -126,18 +133,6 @@ namespace OnlineKursMVC.Controllers
         {
             var courses = _courseService.GetAllCoursesAsync().Result;
             return View(courses);
-        }
-
-        public IActionResult Create()
-		{
-			return View();
-		}
-
-		[HttpPost]
-        public IActionResult Create(Courses course)
-        {
-            _courseService.AddCourseAsync(course).Wait();
-            return RedirectToAction(nameof(Index));
         }
 	}
 }
