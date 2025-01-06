@@ -1,4 +1,4 @@
-﻿using OnlineKurs.Models;
+﻿using OnlineKurs.Shared.Models;
 using OnlineKurs.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using OnlineKurs.Data;

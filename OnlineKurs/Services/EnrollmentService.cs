@@ -1,4 +1,4 @@
-﻿using OnlineKurs.Models;
+﻿using OnlineKurs.Shared.Models;
 using OnlineKurs.Repositories.Interfaces;
 
 namespace OnlineKurs.Services
@@ -46,5 +46,22 @@ namespace OnlineKurs.Services
         {
             await _enrollmentRepository.DeleteAsync(id);
         }
+        public async Task EnrollUserAsync(int userId, int courseId)
+        {
+            await _enrollmentRepository.AddEnrollmentAsync(userId, courseId);
+        }
+        public async Task<bool> IsUserEnrolledAsync(int userId, int courseId)
+        {
+            return await _enrollmentRepository.IsEnrolledAsync(userId, courseId);
+        }
+        public async Task UnenrollUserAsync(int userId, int courseId)
+        {
+            var enrollment = await _enrollmentRepository.GetEnrollmentAsync(userId, courseId);
+            if (enrollment != null)
+            {
+                await _enrollmentRepository.DeleteAsync(enrollment.Id);
+            }
+        }
+
     }
 }

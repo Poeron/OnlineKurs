@@ -1,4 +1,4 @@
-﻿using OnlineKurs.Models;
+﻿using OnlineKurs.Shared.Models;
 
 namespace OnlineKurs.Repositories.Interfaces
 {
@@ -11,5 +11,9 @@ namespace OnlineKurs.Repositories.Interfaces
         Task DeleteAsync(int id);
         Task<IEnumerable<Enrollments>> GetEnrollmentsByCourseIdAsync(int courseId);
         Task<IEnumerable<Enrollments>> GetEnrollmentsByUserIdAsync(int userId);
+        Task<bool> IsEnrolledAsync(int userId, int courseId);
+        Task AddEnrollmentAsync(int userId, int courseId);
+        Task<Enrollments?> GetEnrollmentAsync(int userId, int courseId);
+
     }
 }

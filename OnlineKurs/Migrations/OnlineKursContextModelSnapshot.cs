@@ -22,7 +22,7 @@ namespace OnlineKurs.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("OnlineKurs.Models.Courses", b =>
+            modelBuilder.Entity("OnlineKurs.Shared.Models.Courses", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace OnlineKurs.Migrations
                     b.ToTable("Courses", (string)null);
                 });
 
-            modelBuilder.Entity("OnlineKurs.Models.Enrollments", b =>
+            modelBuilder.Entity("OnlineKurs.Shared.Models.Enrollments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,6 +64,9 @@ namespace OnlineKurs.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("CoursesId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("EnrollmentDate")
@@ -78,13 +81,15 @@ namespace OnlineKurs.Migrations
 
                     b.HasIndex("CourseId");
 
+                    b.HasIndex("CoursesId");
+
                     b.HasIndex("UserId", "CourseId")
                         .IsUnique();
 
                     b.ToTable("Enrollments", (string)null);
                 });
 
-            modelBuilder.Entity("OnlineKurs.Models.Reviews", b =>
+            modelBuilder.Entity("OnlineKurs.Shared.Models.Reviews", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,6 +103,9 @@ namespace OnlineKurs.Migrations
                         .HasColumnType("character varying(1000)");
 
                     b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("CoursesId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -115,12 +123,14 @@ namespace OnlineKurs.Migrations
 
                     b.HasIndex("CourseId");
 
+                    b.HasIndex("CoursesId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews", (string)null);
                 });
 
-            modelBuilder.Entity("OnlineKurs.Models.Users", b =>
+            modelBuilder.Entity("OnlineKurs.Shared.Models.Users", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,9 +163,9 @@ namespace OnlineKurs.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("OnlineKurs.Models.Courses", b =>
+            modelBuilder.Entity("OnlineKurs.Shared.Models.Courses", b =>
                 {
-                    b.HasOne("OnlineKurs.Models.Users", "User")
+                    b.HasOne("OnlineKurs.Shared.Models.Users", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -164,15 +174,19 @@ namespace OnlineKurs.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("OnlineKurs.Models.Enrollments", b =>
+            modelBuilder.Entity("OnlineKurs.Shared.Models.Enrollments", b =>
                 {
-                    b.HasOne("OnlineKurs.Models.Courses", "Course")
+                    b.HasOne("OnlineKurs.Shared.Models.Courses", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineKurs.Models.Users", "User")
+                    b.HasOne("OnlineKurs.Shared.Models.Courses", null)
+                        .WithMany("Enrollments")
+                        .HasForeignKey("CoursesId");
+
+                    b.HasOne("OnlineKurs.Shared.Models.Users", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -183,15 +197,19 @@ namespace OnlineKurs.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("OnlineKurs.Models.Reviews", b =>
+            modelBuilder.Entity("OnlineKurs.Shared.Models.Reviews", b =>
                 {
-                    b.HasOne("OnlineKurs.Models.Courses", "Course")
+                    b.HasOne("OnlineKurs.Shared.Models.Courses", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineKurs.Models.Users", "User")
+                    b.HasOne("OnlineKurs.Shared.Models.Courses", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("CoursesId");
+
+                    b.HasOne("OnlineKurs.Shared.Models.Users", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -200,6 +218,13 @@ namespace OnlineKurs.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineKurs.Shared.Models.Courses", b =>
+                {
+                    b.Navigation("Enrollments");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

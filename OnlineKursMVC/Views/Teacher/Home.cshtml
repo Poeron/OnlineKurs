@@ -1,0 +1,43 @@
+﻿@model IEnumerable<OnlineKurs.Shared.Models.Courses>
+
+<h2>Teacher Dashboard</h2>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h3>Your Courses</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model)
+                    {
+                        <tr>
+                            <td>@course.Title</td>
+                            <td>@course.Description</td>
+                            <td>@course.CreatedAt.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <a href="/Teacher/EditCourse/@course.Id" class="btn btn-warning">Edit</a>
+                                <a href="/Teacher/DeleteCourse/@course.Id" class="btn btn-danger">Delete</a>
+                                <a href="/Courses/Details/@course.Id" class="btn btn-info">View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>You have not created any courses yet. <a href="/Teacher/AddCourse" class="btn btn-primary">Create a New Course</a></p>
+        }
+    </div>
+</div>

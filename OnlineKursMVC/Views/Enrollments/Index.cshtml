@@ -1,0 +1,46 @@
+﻿@model IEnumerable<OnlineKurs.Shared.Models.Enrollments>
+
+<h2>My Enrollments</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course Title</th>
+                <th>Description</th>
+                <th>Enrollment Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var enrollment in Model)
+            {
+                <tr>
+                    <td>@(enrollment.Course != null ? enrollment.Course.Title : "Unknown Course")</td>
+                    <td>@(enrollment.Course != null ? enrollment.Course.Description : "N/A")</td>
+                    <td>@enrollment.EnrollmentDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (enrollment.Course != null)
+                        {
+                            <a href="/Courses/Details/@enrollment.CourseId" class="btn btn-info">View Details</a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Actions Available</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>You have not enrolled in any courses yet. <a href="/Courses">Browse Courses</a> to get started!</p>
+}

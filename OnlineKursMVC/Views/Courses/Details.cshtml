@@ -1,0 +1,88 @@
+﻿@model OnlineKurs.Shared.Models.Courses
+
+<h2>Course Details</h2>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h3>@Model.Title</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Description:</strong> @Model.Description</p>
+        <p><strong>Created At:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+        <p><strong>Created By:</strong> @(Model.User != null ? Model.User.Username : "Unknown")</p>
+    </div>
+    <div class="card-footer text-end">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        @if (ViewBag.IsEnrolled == true)
+        {
+            <p class="text-success">You are enrolled in this course.</p>
+            <form method="post" action="/Courses/Leave">
+                <input type="hidden" name="courseId" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger">Leave Course</button>
+            </form>
+
+            @if (ViewBag.UserReview != null)
+            {
+                <p><strong>Your Rating:</strong> @ViewBag.UserReview.Rating/5</p>
+                <p><strong>Your Comment:</strong> @ViewBag.UserReview.Comment</p>
+            }
+            else
+            {
+                <form method="post" action="/Courses/AddReview">
+                    <input type="hidden" name="courseId" value="@Model.Id" />
+                    <label for="rating">Rate this course (1-5):</label>
+                    <select id="rating" name="rating" class="form-select mb-2">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <label for="comment">Leave a comment:</label>
+                    <textarea id="comment" name="comment" class="form-control mb-2" rows="3"></textarea>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            }
+        }
+        else
+        {
+            <form method="post" action="/Courses/Enroll">
+                <input type="hidden" name="courseId" value="@Model.Id" />
+                <button type="submit" class="btn btn-primary">Enroll in Course</button>
+            </form>
+        }
+
+        <a href="/Courses" class="btn btn-secondary">Back to Courses</a>
+    </div>
+</div>
+
+<h3>Reviews</h3>
+@{
+    var allReviews = ViewBag.AllReviews as List<OnlineKurs.Shared.Models.Reviews>;
+}
+
+@if (allReviews != null && allReviews.Any())
+{
+    <ul class="list-group">
+        @foreach (var review in allReviews)
+        {
+            <li class="list-group-item">
+                <p><strong>Rating:</strong> @review.Rating/5</p>
+                <p><strong>Comment:</strong> @review.Comment</p>
+                <p><small>Reviewed by: @review.User?.Username on @review.CreatedAt.ToString("yyyy-MM-dd")</small></p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No reviews yet. Be the first to review this course!</p>
+}

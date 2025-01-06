@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineKurs.Models;
+using OnlineKurs.Shared.Models;
 using OnlineKurs.Services;
 
 namespace OnlineKurs.Controllers
@@ -16,7 +16,7 @@ namespace OnlineKurs.Controllers
             _enrollmentService = enrollmentService;
         }
 
-        [Authorize(Roles = "admin,instructor")]
+        [Authorize(Roles = "admin,teacher")]
         [HttpGet]
         public async Task<IActionResult> GetAllEnrollments()
         {
@@ -24,7 +24,7 @@ namespace OnlineKurs.Controllers
             return Ok(enrollments);
         }
 
-        [Authorize(Roles = "admin,instructor,user")]
+        [Authorize(Roles = "admin,teacher,user")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEnrollmentById(int id)
         {
@@ -50,7 +50,7 @@ namespace OnlineKurs.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "admin,instructor,user")]
+        [Authorize(Roles = "admin,teacher,user")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEnrollment(int id)
         {

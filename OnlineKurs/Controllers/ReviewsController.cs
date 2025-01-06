@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineKurs.Models;
+using OnlineKurs.Shared.Models;
 using OnlineKurs.Services;
 
 namespace OnlineKurs.Controllers
@@ -16,7 +16,7 @@ namespace OnlineKurs.Controllers
             _reviewService = reviewService;
         }
 
-        [Authorize(Roles = "admin,instructor,user")]
+        [Authorize(Roles = "admin,teacher,user")]
         [HttpGet]
         public async Task<IActionResult> GetAllReviews()
         {
@@ -24,7 +24,7 @@ namespace OnlineKurs.Controllers
             return Ok(reviews);
         }
 
-        [Authorize(Roles = "admin,instructor,user")]
+        [Authorize(Roles = "admin,teacher,user")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReviewById(int id)
         {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineKurs.Models;
+using OnlineKurs.Shared.Models;
 using OnlineKurs.Repositories.Interfaces;
 using OnlineKurs.Services;
 
@@ -27,10 +27,6 @@ namespace OnlineKurs.Controllers
             {
                 return Unauthorized("Invalid credentials");
             }
-            //if (user == null || user.Password != loginRequest.Password)
-            //{
-            //    return Unauthorized("Invalid credentials");
-            //}
 
             var token = _jwtService.GenerateToken(user.Id, user.Role);
 

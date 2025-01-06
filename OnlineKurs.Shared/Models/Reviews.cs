@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OnlineKurs.Models;
+namespace OnlineKurs.Shared.Models;
 
 public class Reviews
 {
@@ -22,7 +22,7 @@ public class Reviews
     public string Comment { get; set; } = string.Empty;
 
     [Required]
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public Courses? Course { get; set; }
     public Users? User { get; set; }

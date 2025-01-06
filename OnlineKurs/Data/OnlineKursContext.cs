@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineKurs.Models;
+using OnlineKurs.Shared.Models;
 
 namespace OnlineKurs.Data
 {

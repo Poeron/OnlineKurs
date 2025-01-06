@@ -36,5 +36,18 @@ namespace OnlineKurs.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public string GetUserIdFromToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            return jsonToken?.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value;
+        }
+        public string GetUserRoleFromToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            return jsonToken?.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineKurs.Models;
+using OnlineKurs.Shared.Models;
 using OnlineKurs.Services;
 
 namespace OnlineKurs.Controllers
@@ -24,7 +24,7 @@ namespace OnlineKurs.Controllers
             return Ok(users);
         }
 
-        [Authorize(Roles = "admin,user,instructor")]
+        [Authorize(Roles = "admin,user,teacher")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -41,7 +41,7 @@ namespace OnlineKurs.Controllers
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
-        [Authorize(Roles = "admin,user,instructor")]
+        [Authorize(Roles = "admin,user,teacher")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] Users user)
         {

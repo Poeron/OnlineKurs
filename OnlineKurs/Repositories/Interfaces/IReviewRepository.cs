@@ -1,4 +1,4 @@
-﻿using OnlineKurs.Models;
+﻿using OnlineKurs.Shared.Models;
 
 namespace OnlineKurs.Repositories.Interfaces
 {

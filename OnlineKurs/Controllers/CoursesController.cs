@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineKurs.Models;
+using OnlineKurs.Shared.Models;
 using OnlineKurs.Services;
 
 namespace OnlineKurs.Controllers
@@ -16,7 +16,7 @@ namespace OnlineKurs.Controllers
             _courseService = courseService;
         }
 
-        [Authorize(Roles = "admin,user,instructor")]
+        [Authorize(Roles = "admin,user,teacher")]
         [HttpGet]
         public async Task<IActionResult> GetAllCourses()
         {
@@ -24,7 +24,7 @@ namespace OnlineKurs.Controllers
             return Ok(courses);
         }
 
-        [Authorize(Roles = "admin,instructor,user")]
+        [Authorize(Roles = "admin,teacher,user")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCourseById(int id)
         {
@@ -33,7 +33,7 @@ namespace OnlineKurs.Controllers
             return Ok(course);
         }
 
-        [Authorize(Roles = "admin,instructor")]
+        [Authorize(Roles = "admin,teacher")]
         [HttpPost]
         public async Task<IActionResult> AddCourse([FromBody] Courses course)
         {
@@ -41,7 +41,7 @@ namespace OnlineKurs.Controllers
             return CreatedAtAction(nameof(GetCourseById), new { id = course.Id }, course);
         }
 
-        [Authorize(Roles = "admin,instructor")]
+        [Authorize(Roles = "admin,teacher")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCourse(int id, [FromBody] Courses course)
         {
@@ -50,7 +50,7 @@ namespace OnlineKurs.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "admin,instructor")]
+        [Authorize(Roles = "admin,teacher")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {

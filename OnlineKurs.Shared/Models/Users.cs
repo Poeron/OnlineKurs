@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OnlineKurs.Models;
+namespace OnlineKurs.Shared.Models;
 
 public class Users
 {
